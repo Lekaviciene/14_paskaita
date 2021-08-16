@@ -3,7 +3,7 @@
 $database_server = 'localhost';
 $database_username = 'root';
 $database_password = '';
-$database_name = 'klientuvaldymosistema';
+$database_name = 'klientu_valdymo_sistema';
 
 // Create connection using mysqli_connect()
 $conn = mysqli_connect($database_server, $database_username, $database_password, $database_name);
