@@ -1,3 +1,7 @@
+<?php 
+    require_once("connection.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +14,7 @@
 
 </head>
 <body>
+    <div class="container">
 <?php 
 
 if(!isset($_COOKIE["prisijungta"])) { 
@@ -24,7 +29,69 @@ if(!isset($_COOKIE["prisijungta"])) {
         header("Location: index.php");
     }
 }    
-    
 ?>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Vardas</th>
+      <th scope="col">Pavardė</th>
+      <th scope="col">Teisės</th>
+      <th scope="col">Veiksmai</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php 
+
+    $sql = "SELECT * FROM `klientai` ORDER BY `ID` DESC"; //uzklausa. 418
+    $result = $conn->query($sql); // uzklausos vykdymas
+    // 0 - Naujas klientas
+    // 1 - Ilgalaikis klientas
+    // 2 - Neaktyvus klientas
+    // 3 - Nemokus klientas
+    // 4 - Uzsienio(Ne EU) klientas
+    // 5 - Uzsienio(EU) klientas
+    while($clients = mysqli_fetch_array($result)) {
+        echo "<tr>";
+            echo "<td>". $clients["ID"]."</td>";
+            echo "<td>". $clients["vardas"]."</td>";
+            echo "<td>". $clients["pavarde"]."</td>";
+            //ifa/switch
+            switch($clients["teises_id"]) {
+                case 0:
+                    echo "<td>Naujas klientas</td>";     
+                break;
+                case 1:
+                    echo "<td>Ilgalaikis klientas</td>";
+                break;
+                case 2:
+                    echo "<td>Neaktyvus klientas</td>";
+                break;
+                case 3:
+                    echo "<td>Nemokus klientas</td>";
+                break;
+                case 4:
+                    echo "<td>Uzsienio(Ne EU) klientas</td>";
+                break;
+                case 5:
+                    echo "<td>Uzsienio(EU) klientas</td>";
+                break;
+                default: echo "<td>Nepatvirtintas klientas</td>";
+            }    
+
+            
+            echo "<td>";
+                echo "<a href='#'>Trinti</a><br>";
+                echo "<a href='#'>Redaguoti</a>";
+            echo "</td>";
+        echo "</tr>";
+    }
+    //Atvaizduoti visus klientus. I lentele
+
+    ?>
+  </tbody>
+</table>
+    </div>
 </body>
 </html>
